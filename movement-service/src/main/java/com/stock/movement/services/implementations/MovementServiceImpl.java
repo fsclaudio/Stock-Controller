@@ -42,7 +42,10 @@ public class MovementServiceImpl implements MovementService {
 		ResponseEntity<Stock> stockResponseEntity = stockProxy.searchStock(body.getProductId());
 
 		Stock stock = stockResponseEntity.getBody();
-		Movement movement = mapper.map(body, Movement.class);
+		Movement movement = new Movement();
+		
+		BeanUtils.copyProperties(body, movement);
+	
 		if (movement.getStatus() == Status.ENTRANCE) {
 			stock.entrance(movement.getAmount());
 			stock.setPrice(movement.getPrice());
